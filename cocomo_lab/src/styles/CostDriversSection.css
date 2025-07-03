@@ -1,0 +1,27 @@
+.cost-drivers-section {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.cost-drivers-content {
+  overflow: auto;
+  overflow-x: hidden;
+  flex: 1;
+  padding: 0 2px;
+  width: 100%;
+}
+
+.cost-drivers-button-container {
+  padding: 8px 0 0 0;
+  display: flex;
+  justify-content: center;
+}
+
+.cost-drivers-save-button {
+  font-size: 0.9rem;
+  padding: 5px 20px;
+  width: 60%;
+}

@@ -1,0 +1,23 @@
+.cost-driver-group {
+  margin-bottom: 0.4rem;
+}
+
+.cost-driver-group-header {
+  margin: 0;
+  margin-bottom: 0.2rem;
+  font-size: 0.9rem;
+  padding-bottom: 0.1rem;
+  border-bottom: 1px solid #90CAF9;
+  color: #01579B;
+  font-weight: 600;
+}
+
+.cost-driver-group-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.3rem 0.4rem;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}

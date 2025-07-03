@@ -1,0 +1,45 @@
+.section-container {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  max-width: 55vw;
+  max-height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.section-container.left {
+  flex: 0 0 46%;
+  margin-right: 0.5rem;
+}
+
+.section-container.right {
+  flex: 0 0 50%;
+  margin-left: 0.5rem;
+}
+
+.right-section-layout {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.right-section-column {
+  flex: 0 0 50%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.right-section-column.left {
+  margin-right: 0.3rem;
+  width: 100%;
+}
+
+.right-section-column.right {
+  margin-left: 0.3rem;
+}
