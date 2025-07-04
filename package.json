@@ -1,12 +1,10 @@
 {
   "name": "cocomo_lab",
   "private": true,
-  "homepage": "https://pierosuarez29.github.io/COCOMO-LAB",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
+
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
