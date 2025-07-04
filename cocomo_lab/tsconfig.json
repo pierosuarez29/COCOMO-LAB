@@ -1,7 +1,13 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  "compilerOptions": {
+    "jsx": "react-jsx",       // 🔑 Esto habilita el nuevo transform sin importar React
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
+  },
+  "include": ["src"]
 }
