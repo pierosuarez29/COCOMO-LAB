@@ -1,7 +1,7 @@
 {
   "name": "cocomo_lab",
   "private": true,
-  "homepage":"http:/pierosuarez29.github.io/COCOMO-LAB",
+  "homepage":"https://github.com/pierosuarez29/COCOMO-LAB",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
