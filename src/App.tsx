@@ -1,49 +1,53 @@
 import React, { useState } from "react";
 import ContenedorPrincipal from "./components/ContenedorPrincipal";
-import PantallaInicio from "./components/PantallaInicio";
-import SelectorModelo from "./components/SelectorModelo";
-import FormularioCocomo81 from "./components/FormularioCocomo81";
-import FormularioCocomo81Intermedio from "./components/FormularioCocomo81Intermedio";
+import PantallaBienvenida from "./components/PantallaBienvenida";
+import PantallaNombreProyecto from "./components/PantallaNombreProyecto";
+import PantallaSeleccionModelo from "./components/PantallaSeleccionModelo";
+import FormularioCocomo81Elegante from "./components/FormularioCocomo81Elegante";
+import FormularioCocomoII from "./components/FormularioCocomoII";
+
+
+// Las demás importaciones vendrán después
 
 function App() {
+  const [pantalla, setPantalla] = useState<"inicio" | "nombre" | "modelo" | "formulario">("inicio");
   const [nombreProyecto, setNombreProyecto] = useState("");
-  const [modelo, setModelo] = useState("");
-  const [submodelo, setSubmodelo] = useState("");
-
-  const handleInicio = (nombre: string, modelo: string, submodelo: string) => {
-    setNombreProyecto(nombre);
-    setModelo(modelo);
-    setSubmodelo(submodelo);
-  };
-
-  const handleSubmodelo = (sub: string) => {
-    setSubmodelo(sub);
-  };
-
-  const volverInicio = () => {
-    setNombreProyecto("");
-    setModelo("");
-    setSubmodelo("");
-  };
+  const [modelo, setModelo] = useState<"cocomo81" | "cocomoII" | "">("");
 
   return (
     <ContenedorPrincipal>
-      {!modelo ? (
-        <PantallaInicio onIniciar={handleInicio} />
-      ) : modelo === "cocomo81" && submodelo === "basico" ? (
-        <FormularioCocomo81 onVolver={() => setModelo("")} />
-      ) : modelo === "cocomo81" && submodelo === "intermedio" ? (
-        <FormularioCocomo81Intermedio onVolver={() => setModelo("")} />
-      ) : (
-        <div className="text-center space-y-4">
-          <p className="text-gray-600">Este modelo aún no ha sido implementado.</p>
-          <button
-            onClick={volverInicio}
-            className="text-blue-600 hover:underline"
-          >
-            ⬅ Volver al inicio
-          </button>
-        </div>
+      {pantalla === "inicio" && (
+        <PantallaBienvenida onContinuar={() => setPantalla("nombre")} />
+      )}
+      {pantalla === "nombre" && (
+        <PantallaNombreProyecto
+          onSiguiente={(nombre) => {
+            setNombreProyecto(nombre);
+            setPantalla("modelo");
+          }}
+          onVolver={() => setPantalla("inicio")}
+        />
+      )}
+      {pantalla === "modelo" && (
+        <PantallaSeleccionModelo
+          nombreProyecto={nombreProyecto}
+          onSeleccionarModelo={(modelo) => {
+            setModelo(modelo);
+            setPantalla("formulario");
+          }}
+          onVolver={() => setPantalla("nombre")}
+        />
+      )}{pantalla === "formulario" && modelo === "cocomo81" && (
+        <FormularioCocomo81Elegante
+          nombreProyecto={nombreProyecto}
+          onVolver={() => setPantalla("modelo")}
+        />
+      )}
+      {pantalla === "formulario" && modelo === "cocomoII" && (
+        <FormularioCocomoII
+          nombreProyecto={nombreProyecto}
+          onVolver={() => setPantalla("modelo")}
+        />
       )}
     </ContenedorPrincipal>
   );
