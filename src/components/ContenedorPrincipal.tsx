@@ -1,0 +1,17 @@
+import React from "react";
+
+interface ContenedorPrincipalProps {
+  children: React.ReactNode;
+}
+
+const ContenedorPrincipal = ({ children }: ContenedorPrincipalProps) => {
+  return (
+    <div className="w-full h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-300">
+      <div className="w-[900px] h-[600px] bg-white rounded-3xl shadow-xl p-8 overflow-hidden relative transition-all duration-500 ease-in-out">
+        {children}
+      </div>
+    </div>
+  );
+};
+
+export default ContenedorPrincipal;

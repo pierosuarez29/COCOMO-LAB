@@ -1,17 +1,15 @@
-// src/components/SelectorModelo.tsx
-import { useState } from "react";
+import React, { useState } from "react";
 
+interface PantallaInicioProps {
+  onIniciar: (nombreProyecto: string, modelo: string, submodelo: string) => void;
+}
 type Modelo = "ninguno" | "cocomo81" | "cocomoII";
 type SubModelo = "" | "basico" | "intermedio" | "post-arquitectura";
 
-interface SelectorModeloProps {
-  onSeleccion: (modelo: Modelo, submodelo: SubModelo) => void;
-  onVolver: () => void;
-}
-
-const SelectorModelo = ({ onSeleccion, onVolver }: SelectorModeloProps) => {
-  const [modelo, setModelo] = useState<Modelo>("ninguno");
-  const [submodelo, setSubmodelo] = useState<SubModelo>("");
+const PantallaInicio = ({ onIniciar }: PantallaInicioProps) => {
+  const [nombreProyecto, setNombreProyecto] = useState("");
+  const [modelo, setModelo] = useState("");
+  const [submodelo, setSubmodelo] = useState("");
 
   const handleModelo = (value: Modelo) => {
     setModelo(value);
@@ -20,19 +18,45 @@ const SelectorModelo = ({ onSeleccion, onVolver }: SelectorModeloProps) => {
 
   const handleSubmodelo = (value: SubModelo) => {
     setSubmodelo(value);
-    onSeleccion(modelo, value);
+  };
+
+
+
+  const iniciar = () => {
+    if (!nombreProyecto.trim() || !modelo) return;
+    onIniciar(nombreProyecto.trim(), modelo, submodelo);
   };
 
   return (
-    <div className="space-y-4 max-w-xl w-full bg-white p-6 rounded-xl shadow-xl animate-slide-in-left relative">
-      <button
-        onClick={onVolver}
-        className="absolute top-4 right-4 text-sm text-blue-600 hover:underline"
-      >
-        ⬅ Volver
-      </button>
+    <div className="flex flex-col justify-center h-full space-y-6 animate-fade-in">
+      <h1 className="text-3xl font-bold text-center text-gray-800">COCOMO_LAB</h1>
 
-      <h2 className="text-xl font-bold text-gray-700">Selecciona un modelo</h2>
+      <div className="space-y-4 max-w-sm mx-auto w-full">
+        <div>
+          <label className="text-sm font-medium text-gray-700 block mb-1">Nombre del proyecto</label>
+          <input
+            type="text"
+            className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring"
+            value={nombreProyecto}
+            onChange={(e) => setNombreProyecto(e.target.value)}
+          />
+        </div>
+
+        {/* <div>
+          <label className="text-sm font-medium text-gray-700 block mb-1">Modelo a utilizar</label>
+          <select
+            className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring"
+            value={modelo}
+            onChange={(e) => setModelo(e.target.value)}
+          >
+            <option value="">-- Seleccionar --</option>
+            <option value="cocomo81">COCOMO 81</option>
+            <option value="cocomoII">COCOMO II</option>
+          </select>
+        </div> */}
+
+        
+        <h2 className="text-xl font-bold text-gray-700">Selecciona un modelo</h2>
 
       <div className="flex gap-4">
         <button
@@ -92,8 +116,18 @@ const SelectorModelo = ({ onSeleccion, onVolver }: SelectorModeloProps) => {
           </div>
         </div>
       )}
+
+
+
+        <button
+          onClick={iniciar}
+          className="w-full py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition"
+        >
+          Iniciar estimación
+        </button>
+      </div>
     </div>
   );
 };
 
-export default SelectorModelo;
+export default PantallaInicio;
