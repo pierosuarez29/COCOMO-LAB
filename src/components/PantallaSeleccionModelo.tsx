@@ -1,12 +1,17 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-interface Props {
-  nombreProyecto: string;
-  onSeleccionarModelo: (modelo: "cocomo81" | "cocomoII") => void;
-  onVolver: () => void;
-}
+const PantallaSeleccionModelo = () => {
+  const [nombreProyecto, setNombreProyecto] = useState("");
+  const navigate = useNavigate();
 
-const PantallaSeleccionModelo = ({ nombreProyecto, onSeleccionarModelo, onVolver }: Props) => {
+  useEffect(() => {
+    const nombre = sessionStorage.getItem("nombreProyecto");
+    if (nombre) setNombreProyecto(nombre);
+    else navigate("/nombre");
+  }, [navigate]);
+
   return (
     <motion.div
       className="flex flex-col h-full justify-center items-center text-center space-y-6"
@@ -24,13 +29,13 @@ const PantallaSeleccionModelo = ({ nombreProyecto, onSeleccionarModelo, onVolver
 
       <div className="flex gap-6 mt-4">
         <button
-          onClick={() => onSeleccionarModelo("cocomo81")}
+          onClick={() => navigate("/cocomo81")}
           className="px-6 py-3 w-40 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition font-semibold cursor-pointer"
         >
           COCOMO 81
         </button>
         <button
-          onClick={() => onSeleccionarModelo("cocomoII")}
+          onClick={() => navigate("/cocomoII")}
           className="px-6 py-3 w-40 bg-neutral-700 text-white rounded-xl hover:bg-neutral-800 transition font-semibold cursor-pointer"
         >
           COCOMO II
@@ -38,7 +43,7 @@ const PantallaSeleccionModelo = ({ nombreProyecto, onSeleccionarModelo, onVolver
       </div>
 
       <button
-        onClick={onVolver}
+        onClick={() => navigate(-1)}
         className="text-sm text-blue-600 hover:underline mt-4 cursor-pointer"
       >
         ⬅ Volver

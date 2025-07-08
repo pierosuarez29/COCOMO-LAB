@@ -12,6 +12,26 @@ export interface CostFactor {
   niveles: { nivel: FactorNivel; valor: number }[];
 }
 
+export const gruposCocomo81 = [
+  {
+    grupo: "Producto",
+    factores: ["rss", "tbd", "cpr"],
+  },
+  {
+    grupo: "Hardware",
+    factores: ["rte", "rmp", "vmc", "trc"],
+  },
+  {
+    grupo: "Personal",
+    factores: ["can", "ean", "cpro", "eso", "elp"],
+  },
+  {
+    grupo: "Proyecto",
+    factores: ["utp", "uhs", "rpl"],
+  },
+];
+
+
 export const cocomo81CostDrivers: CostFactor[] = [
   {
     id: "rss",

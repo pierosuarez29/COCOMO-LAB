@@ -257,3 +257,22 @@ export const conductoresCoste: Factor[] = [
     ],
   },
 ];
+
+export const gruposConductoresCoste = [
+  {
+    grupo: "Producto",
+    factores: ["rely", "data", "cplx", "ruse", "docu"],
+  },
+  {
+    grupo: "Plataforma",
+    factores: ["time", "stor", "pvol"],
+  },
+  {
+    grupo: "Personal",
+    factores: ["acap", "pcap", "pccon", "aexp", "pexp", "ltexp"],
+  },
+  {
+    grupo: "Proyecto",
+    factores: ["tool", "site", "sced"],
+  },
+];

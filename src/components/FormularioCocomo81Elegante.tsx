@@ -1,16 +1,15 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { calcularCocomo81, calcularCocomo81Intermedio } from "../utils/cocomo81";
 import { CocomoInputs, CocomoResult } from "../types/cocomo81";
-import { cocomo81CostDrivers, FactorNivel } from "../data/cocomo81Factors";
+import { cocomo81CostDrivers, FactorNivel, gruposCocomo81 } from "../data/cocomo81Factors";
 import { motion } from "framer-motion";
 import { exportarPDF } from "../utils/exportarPDF";
 
-interface Props {
-  nombreProyecto: string;
-  onVolver: () => void;
-}
+const FormularioCocomo81Elegante = () => {
+  const navigate = useNavigate();
+  const nombreProyecto = sessionStorage.getItem("nombreProyecto") || "Sin nombre";
 
-const FormularioCocomo81Elegante = ({ nombreProyecto, onVolver }: Props) => {
   const [inputs, setInputs] = useState<CocomoInputs>({ kloc: 0, mode: "orgánico" });
   const [usarIntermedio, setUsarIntermedio] = useState(false);
   const [factores, setFactores] = useState<Record<string, FactorNivel>>({});
@@ -53,13 +52,16 @@ const FormularioCocomo81Elegante = ({ nombreProyecto, onVolver }: Props) => {
       transition={{ duration: 0.4 }}
     >
       {/* Panel Izquierdo */}
-      <div className="w-2/3 pr-6 border-r border-gray-200">
+      <div className="w-4/10 pr-6 border-r border-gray-200">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-xl font-bold text-gray-800">Proyecto: {nombreProyecto}</h2>
             <p className="text-sm text-gray-500">COCOMO 81 - Estimador</p>
           </div>
-          <button onClick={onVolver} className="text-sm text-blue-600 hover:underline cursor-pointer">
+          <button
+            onClick={() => navigate("/modelo")}
+            className="text-sm text-blue-600 hover:underline cursor-pointer"
+          >
             ⬅ Volver
           </button>
         </div>
@@ -117,59 +119,83 @@ const FormularioCocomo81Elegante = ({ nombreProyecto, onVolver }: Props) => {
         </form>
 
         {resultado && (
-        <>
+          <>
             <div className="mt-6 bg-gray-100 p-4 rounded-xl text-sm text-gray-700 space-y-1">
-            <p><strong>Esfuerzo:</strong> {resultado.esfuerzo} personas-mes</p>
-            <p><strong>Duración:</strong> {resultado.tiempo} meses</p>
-            <p><strong>Personas necesarias:</strong> {resultado.personas}</p>
-            <p><strong>Costo estimado:</strong> S/. {resultado.costo}</p>
+              <p><strong>Esfuerzo:</strong> {resultado.esfuerzo} personas-mes</p>
+              <p><strong>Duración:</strong> {resultado.tiempo} meses</p>
+              <p><strong>Personas necesarias:</strong> {resultado.personas}</p>
+              <p><strong>Costo estimado:</strong> S/. {resultado.costo}</p>
             </div>
 
             <button
-            onClick={() =>
+              onClick={() =>
                 exportarPDF({
-                nombreProyecto,
-                modelo: "COCOMO 81",
-                entradas: {
+                  nombreProyecto,
+                  modelo: "COCOMO 81",
+                  entradas: {
                     KLOC: inputs.kloc,
                     Modo: inputs.mode,
                     "Modelo Intermedio": usarIntermedio ? "Sí" : "No",
-                },
-                resultados: resultado,
+                  },
+                  resultados: resultado,
                 })
-            }
-            className="mt-3 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm cursor-pointer"
+              }
+              className="mt-3 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm cursor-pointer"
             >
-            📄 Exportar PDF
+              📄 Exportar PDF
             </button>
-        </>
+          </>
         )}
-
       </div>
 
-      {/* Panel Derecho - Factores */}
-      <div className="w-1/3 pl-6">
-        <h3 className="text-sm font-semibold text-gray-600 mb-2">Factores de coste</h3>
-        <div className="grid grid-cols-1 gap-3 h-[90%] overflow-y-auto pr-2">
-          {cocomo81CostDrivers.map((factor) => (
-            <div key={factor.id} className={`${usarIntermedio ? "" : "opacity-40 pointer-events-none"}`}>
-              <label className="block mb-1 text-xs text-gray-700 font-medium">{factor.nombre}</label>
-              <select
-                className="w-full px-3 py-2 border rounded-xl focus:outline-none"
-                disabled={!usarIntermedio}
-                value={factores[factor.id] || "Nominal"}
-                onChange={(e) => handleFactorChange(factor.id, e.target.value as FactorNivel)}
+      {/* Panel Derecho - Factores de Coste */}
+<div className="w-6/10 pl-6">
+  <h3 className="text-md font-bold text-center text-gray-700 mb-4 border-b pb-2">
+    Factores de Coste (Intermedio)
+  </h3>
+
+  <div className="space-y-6">
+    {gruposCocomo81.map((grupo) => (
+      <div key={grupo.grupo}>
+        <h4 className="text-sm font-semibold text-indigo-700 mb-2">{grupo.grupo}</h4>
+        <div className="grid grid-cols-2 xl:grid-cols-5 gap-4">
+          {grupo.factores.map((id) => {
+            const factor = cocomo81CostDrivers.find((f) => f.id === id);
+            if (!factor) return null;
+
+            return (
+              <div
+                key={factor.id}
+                className={`border p-2 rounded-lg shadow-sm bg-gray-50 ${
+                  usarIntermedio ? "" : "opacity-40 pointer-events-none"
+                }`}
               >
-                {factor.niveles.map((n) => (
-                  <option key={n.nivel} value={n.nivel}>
-                    {n.nivel} ({n.valor})
-                  </option>
-                ))}
-              </select>
-            </div>
-          ))}
+                <label className="block mb-1 ml-0 text-xs font-semibold text-gray-600 ">
+                  {factor.nombre}
+                </label>
+                <select
+                  className="w-full px-2 py-1 text-sm border rounded-md focus:outline-none"
+                  disabled={!usarIntermedio}
+                  value={factores[factor.id] || "Nominal"}
+                  onChange={(e) =>
+                    handleFactorChange(factor.id, e.target.value as FactorNivel)
+                  }
+                >
+                  {factor.niveles.map((n) => (
+                    <option key={n.nivel} value={n.nivel}>
+                      {n.nivel} ({n.valor})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            );
+          })}
         </div>
       </div>
+    ))}
+  </div>
+</div>
+
     </motion.div>
   );
 };

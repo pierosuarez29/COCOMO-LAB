@@ -1,17 +1,16 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { conductoresEscala, conductoresCoste, Nivel } from "../data/cocomoIIFactors";
+import { conductoresEscala, conductoresCoste, Nivel, gruposConductoresCoste } from "../data/cocomoIIFactors";
 import { calcularCocomoII } from "../utils/cocomoII";
 import { ResultadoCocomoII } from "../types/cocomoII";
 import { exportarPDF } from "../utils/exportarPDF";
+import { useNavigate } from "react-router-dom";
 
 
-interface Props {
-  nombreProyecto: string;
-  onVolver: () => void;
-}
+const FormularioCocomoII = () => {
+  const navigate = useNavigate();
+  const nombreProyecto = sessionStorage.getItem("nombreProyecto") || "Proyecto sin nombre";
 
-const FormularioCocomoII = ({ nombreProyecto, onVolver }: Props) => {
   const [kloc, setKloc] = useState(0);
   const [costoPersonaMes, setCostoPersonaMes] = useState(1000);
   const [escala, setEscala] = useState<Record<string, Nivel>>({});
@@ -50,7 +49,10 @@ const FormularioCocomoII = ({ nombreProyecto, onVolver }: Props) => {
             <h2 className="text-xl font-bold text-gray-800">Proyecto: {nombreProyecto}</h2>
             <p className="text-sm text-gray-500">COCOMO II - Post-Arquitectura</p>
           </div>
-          <button onClick={onVolver} className="text-sm text-blue-600 hover:underline cursor-pointer">
+          <button
+            onClick={() => navigate("/modelo")}
+            className="text-sm text-blue-600 hover:underline cursor-pointer"
+          >
             ⬅ Volver
           </button>
         </div>
@@ -177,28 +179,51 @@ const FormularioCocomoII = ({ nombreProyecto, onVolver }: Props) => {
 
       </div>
 
-      {/* Panel Derecho - Factores de coste */}
-      <div className="w-1/3 pl-6">
-        <h3 className="text-sm font-semibold text-gray-600 mb-2">Factores de Coste</h3>
-        <div className="grid grid-cols-1 gap-3 h-[90%] overflow-y-auto pr-2">
-          {conductoresCoste.map((factor) => (
-            <div key={factor.id}>
-              <label className="block text-xs font-medium text-gray-700 mb-1">{factor.nombre}</label>
-              <select
-                value={coste[factor.id] || "Nominal"}
-                onChange={(e) => handleCoste(factor.id, e.target.value as Nivel)}
-                className="w-full px-3 py-2 border rounded-xl focus:outline-none"
+      {/* Panel Derecho - Factores de Coste agrupados */}
+<div className="w-1/3 pl-6">
+  <h3 className="text-md font-bold text-center text-gray-700 mb-4 border-b pb-2">
+    Factores de Coste
+  </h3>
+
+  <div className="space-y-6">
+    {gruposConductoresCoste.map((grupo) => (
+      <div key={grupo.grupo}>
+        <h4 className="text-sm font-semibold text-indigo-700 mb-2">{grupo.grupo}</h4>
+        <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+          {grupo.factores.map((id) => {
+            const factor = conductoresCoste.find((f) => f.id === id);
+            if (!factor) return null;
+
+            return (
+              <div
+                key={factor.id}
+                className="border p-2 rounded-lg shadow-sm bg-gray-50"
               >
-                {factor.niveles.map((nivel) => (
-                  <option key={nivel.nivel} value={nivel.nivel}>
-                    {nivel.nivel} ({nivel.valor})
-                  </option>
-                ))}
-              </select>
-            </div>
-          ))}
+                <label className="block mb-1 text-xs font-semibold text-gray-600 text-center">
+                  {factor.nombre}
+                </label>
+                <select
+                  value={coste[factor.id] || "Nominal"}
+                  onChange={(e) =>
+                    handleCoste(factor.id, e.target.value as Nivel)
+                  }
+                  className="w-full px-2 py-1 text-sm border rounded-md focus:outline-none focus:ring"
+                >
+                  {factor.niveles.map((nivel) => (
+                    <option key={nivel.nivel} value={nivel.nivel}>
+                      {nivel.nivel} ({nivel.valor})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            );
+          })}
         </div>
       </div>
+    ))}
+  </div>
+</div>
+
     </motion.div>
   );
 };
