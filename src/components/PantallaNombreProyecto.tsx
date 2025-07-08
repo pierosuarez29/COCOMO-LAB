@@ -19,7 +19,7 @@ const PantallaNombreProyecto = () => {
 
   return (
     <motion.div
-      className="flex flex-col h-full justify-center items-center text-center space-y-6"
+      className="flex flex-col flex-col lg:flex-row justify-center items-center text-center space-y-6"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}

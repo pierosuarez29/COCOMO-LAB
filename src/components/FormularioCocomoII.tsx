@@ -39,7 +39,7 @@ const FormularioCocomoII = () => {
 
   return (
     <motion.div
-      className="flex flex-col lg:flex-row h-full w-full overflow-y-auto"
+      className="flex flex-col lg:flex-row flex-col lg:flex-row w-full overflow-y-auto"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}

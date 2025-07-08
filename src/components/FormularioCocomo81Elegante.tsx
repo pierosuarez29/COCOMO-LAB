@@ -46,7 +46,7 @@ const FormularioCocomo81Elegante = () => {
 
   return (
     <motion.div
-      className="flex flex-col lg:flex-row w-full h-full overflow-y-auto"
+      className="flex flex-col lg:flex-row w-full flex-col lg:flex-row overflow-y-auto"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
