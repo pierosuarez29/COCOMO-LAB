@@ -6,7 +6,7 @@ const PantallaBienvenida = () => {
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center w-full text-center space-y-6 mt-10 mb-10"
+      className="flex flex-col items-center justify-center w-full h-3/4 px-4 text-center gap-6 my-10 scale-[0.9] sm:scale-95 md:scale-100 transition"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}

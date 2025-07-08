@@ -14,14 +14,16 @@ const PantallaSeleccionModelo = () => {
 
   return (
     <motion.div
-      className="flex items-center justify-center h-full w-full px-4"
+      className="flex items-center justify-center h-full w-full px-4 scale-[0.9] sm:scale-95 md:scale-100 transition"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="bg-white pt-5 pb-5 max-w-xl text-center space-y-6">
-        <h1 className="text-4xl font-bold text-gray-800 tracking-tight">COCOMO-LAB</h1>
-        <p className="text-gray-600 text-lg">Estima el costo de tu proyecto de manera rápida y fácil</p>
+      <div className="bg-white p-6 sm:p-8 rounded-2xl w-full max-w-lg text-center space-y-6">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 tracking-tight">COCOMO-LAB</h1>
+        <p className="text-gray-600 text-base md:text-lg">
+          Estima el costo de tu proyecto de manera rápida y fácil
+        </p>
 
         <div className="space-y-1">
           <p className="text-xl font-semibold text-indigo-700">{nombreProyecto}</p>

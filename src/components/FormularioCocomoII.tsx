@@ -39,13 +39,13 @@ const FormularioCocomoII = () => {
 
   return (
     <motion.div
-      className="flex flex-col lg:flex-row flex-col lg:flex-row w-full overflow-y-auto"
+      className="flex flex-col lg:flex-row w-full h-full overflow-auto"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
       {/* Panel Izquierdo */}
-      <div className="w-full lg:w-9/16 p-4 lg:pr-6 border-b lg:border-b-0 lg:border-r border-gray-200">
+      <div className="w-full lg:w-2/3 pr-0 lg:pr-6 border-b lg:border-b-0 lg:border-r border-gray-200 px-4 pb-6 lg:pb-0">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-xl font-bold text-gray-800">Proyecto: {nombreProyecto}</h2>
@@ -72,7 +72,6 @@ const FormularioCocomoII = () => {
                 className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring"
               />
             </div>
-
             <div className="w-full md:w-1/2">
               <label className="text-sm font-medium block mb-1">Costo por persona-mes (S/.)</label>
               <input
@@ -85,7 +84,7 @@ const FormularioCocomoII = () => {
             </div>
           </div>
 
-          {/* Escala en modo colapsable */}
+          {/* Conductores de Escala */}
           <div className="pt-4">
             <div
               onClick={() => setMostrarEscala((prev) => !prev)}
@@ -98,10 +97,10 @@ const FormularioCocomoII = () => {
             </div>
 
             {mostrarEscala && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-7 mt-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-3">
                 {conductoresEscala.map((factor) => (
-                  <div key={factor.id} className="flex flex-col items-start">
-                    <label className="text-xs font-medium text-gray-700 leading-snug mb-1">
+                  <div key={factor.id}>
+                    <label className="text-xs font-medium text-gray-700 mb-1 block">
                       {factor.nombre}
                     </label>
                     <select
@@ -164,8 +163,8 @@ const FormularioCocomoII = () => {
         )}
       </div>
 
-      {/* Panel Derecho - Cost Drivers agrupados */}
-      <div className="w-full lg:w-8/16 p-4">
+      {/* Panel Derecho - Factores de coste */}
+      <div className="w-full lg:w-1/3 px-4 pt-6 lg:pt-0">
         <h3 className="text-md font-bold text-center text-gray-700 mb-4 border-b pb-2">
           Factores de Coste
         </h3>

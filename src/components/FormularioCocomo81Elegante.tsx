@@ -46,13 +46,13 @@ const FormularioCocomo81Elegante = () => {
 
   return (
     <motion.div
-      className="flex flex-col lg:flex-row w-full flex-col lg:flex-row overflow-y-auto"
+      className="flex flex-col lg:flex-row w-full h-full overflow-auto"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
       {/* Panel Izquierdo */}
-      <div className="w-full lg:w-2/5 pr-0 lg:pr-6 border-b lg:border-b-0 lg:border-r border-gray-200 p-4">
+      <div className="w-full lg:w-2/5 p-4 border-b lg:border-b-0 lg:border-r border-gray-200">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-xl font-bold text-gray-800">Proyecto: {nombreProyecto}</h2>
@@ -69,12 +69,12 @@ const FormularioCocomo81Elegante = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="w-full md:w-1/2">
-              <label className="block mb-1 text-sm font-medium">Tamaño del proyecto (KLOC)</label>
+              <label className="text-sm font-medium block mb-1">Tamaño del proyecto (KLOC)</label>
               <input
                 type="number"
                 name="kloc"
-                min="0"
-                step="0.01"
+                min={0}
+                step={0.01}
                 className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring"
                 value={inputs.kloc}
                 onChange={handleChange}
@@ -83,7 +83,7 @@ const FormularioCocomo81Elegante = () => {
             </div>
 
             <div className="w-full md:w-1/2">
-              <label className="block mb-1 text-sm font-medium">Modo del proyecto</label>
+              <label className="text-sm font-medium block mb-1">Modo del proyecto</label>
               <select
                 name="mode"
                 className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring"
@@ -148,8 +148,12 @@ const FormularioCocomo81Elegante = () => {
         )}
       </div>
 
-      {/* Panel Derecho - Factores de Coste */}
-      <div className={`w-full lg:w-3/5 p-4 transition-all duration-500 ${usarIntermedio ? "block" : "hidden lg:block opacity-30 pointer-events-none"}`}>
+      {/* Panel Derecho - Factores de Coste (oculto si no se activa) */}
+      <div
+        className={`w-full lg:w-3/5 p-4 transition-all duration-500 ${
+          usarIntermedio ? "block" : "hidden lg:block opacity-30 pointer-events-none"
+        }`}
+      >
         <h3 className="text-md font-bold text-center text-gray-700 mb-4 border-b pb-2">
           Factores de Coste (Intermedio)
         </h3>
@@ -166,7 +170,7 @@ const FormularioCocomo81Elegante = () => {
                   return (
                     <div
                       key={factor.id}
-                      className={`border p-2 rounded-lg shadow-sm bg-gray-50`}
+                      className="border p-2 rounded-lg shadow-sm bg-gray-50"
                     >
                       <label className="block mb-1 text-xs font-semibold text-gray-600">
                         {factor.nombre}
