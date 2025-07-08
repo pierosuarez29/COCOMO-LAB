@@ -46,13 +46,13 @@ const FormularioCocomo81Elegante = () => {
 
   return (
     <motion.div
-      className="flex h-full w-full"
+      className="flex flex-col lg:flex-row w-full h-full overflow-y-auto"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
       {/* Panel Izquierdo */}
-      <div className="w-4/10 pr-6 border-r border-gray-200">
+      <div className="w-full lg:w-2/5 pr-0 lg:pr-6 border-b lg:border-b-0 lg:border-r border-gray-200 p-4">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-xl font-bold text-gray-800">Proyecto: {nombreProyecto}</h2>
@@ -67,8 +67,8 @@ const FormularioCocomo81Elegante = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="flex gap-4">
-            <div className="w-1/2">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="w-full md:w-1/2">
               <label className="block mb-1 text-sm font-medium">Tamaño del proyecto (KLOC)</label>
               <input
                 type="number"
@@ -82,7 +82,7 @@ const FormularioCocomo81Elegante = () => {
               />
             </div>
 
-            <div className="w-1/2">
+            <div className="w-full md:w-1/2">
               <label className="block mb-1 text-sm font-medium">Modo del proyecto</label>
               <select
                 name="mode"
@@ -149,53 +149,50 @@ const FormularioCocomo81Elegante = () => {
       </div>
 
       {/* Panel Derecho - Factores de Coste */}
-<div className="w-6/10 pl-6">
-  <h3 className="text-md font-bold text-center text-gray-700 mb-4 border-b pb-2">
-    Factores de Coste (Intermedio)
-  </h3>
+      <div className={`w-full lg:w-3/5 p-4 transition-all duration-500 ${usarIntermedio ? "block" : "hidden lg:block opacity-30 pointer-events-none"}`}>
+        <h3 className="text-md font-bold text-center text-gray-700 mb-4 border-b pb-2">
+          Factores de Coste (Intermedio)
+        </h3>
 
-  <div className="space-y-6">
-    {gruposCocomo81.map((grupo) => (
-      <div key={grupo.grupo}>
-        <h4 className="text-sm font-semibold text-indigo-700 mb-2">{grupo.grupo}</h4>
-        <div className="grid grid-cols-2 xl:grid-cols-5 gap-4">
-          {grupo.factores.map((id) => {
-            const factor = cocomo81CostDrivers.find((f) => f.id === id);
-            if (!factor) return null;
+        <div className="space-y-6">
+          {gruposCocomo81.map((grupo) => (
+            <div key={grupo.grupo}>
+              <h4 className="text-sm font-semibold text-indigo-700 mb-2">{grupo.grupo}</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                {grupo.factores.map((id) => {
+                  const factor = cocomo81CostDrivers.find((f) => f.id === id);
+                  if (!factor) return null;
 
-            return (
-              <div
-                key={factor.id}
-                className={`border p-2 rounded-lg shadow-sm bg-gray-50 ${
-                  usarIntermedio ? "" : "opacity-40 pointer-events-none"
-                }`}
-              >
-                <label className="block mb-1 ml-0 text-xs font-semibold text-gray-600 ">
-                  {factor.nombre}
-                </label>
-                <select
-                  className="w-full px-2 py-1 text-sm border rounded-md focus:outline-none"
-                  disabled={!usarIntermedio}
-                  value={factores[factor.id] || "Nominal"}
-                  onChange={(e) =>
-                    handleFactorChange(factor.id, e.target.value as FactorNivel)
-                  }
-                >
-                  {factor.niveles.map((n) => (
-                    <option key={n.nivel} value={n.nivel}>
-                      {n.nivel} ({n.valor})
-                    </option>
-                  ))}
-                </select>
+                  return (
+                    <div
+                      key={factor.id}
+                      className={`border p-2 rounded-lg shadow-sm bg-gray-50`}
+                    >
+                      <label className="block mb-1 text-xs font-semibold text-gray-600">
+                        {factor.nombre}
+                      </label>
+                      <select
+                        className="w-full px-2 py-1 text-sm border rounded-md focus:outline-none"
+                        disabled={!usarIntermedio}
+                        value={factores[factor.id] || "Nominal"}
+                        onChange={(e) =>
+                          handleFactorChange(factor.id, e.target.value as FactorNivel)
+                        }
+                      >
+                        {factor.niveles.map((n) => (
+                          <option key={n.nivel} value={n.nivel}>
+                            {n.nivel} ({n.valor})
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  );
+                })}
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
-    ))}
-  </div>
-</div>
-
     </motion.div>
   );
 };
