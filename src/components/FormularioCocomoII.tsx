@@ -98,7 +98,7 @@ const FormularioCocomoII = () => {
             </div>
 
             {mostrarEscala && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-5 mt-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-7 mt-3">
                 {conductoresEscala.map((factor) => (
                   <div key={factor.id} className="flex flex-col items-start">
                     <label className="text-xs font-medium text-gray-700 leading-snug mb-1">
@@ -107,7 +107,7 @@ const FormularioCocomoII = () => {
                     <select
                       value={escala[factor.id] || "Nominal"}
                       onChange={(e) => handleEscala(factor.id, e.target.value as Nivel)}
-                      className="w-full px-3 py-2 border rounded-xl focus:outline-none"
+                      className="w-full px-2 py-2 border rounded-xl focus:outline-none"
                     >
                       {factor.niveles.map((nivel) => (
                         <option key={nivel.nivel} value={nivel.nivel}>
