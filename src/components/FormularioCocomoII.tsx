@@ -45,7 +45,7 @@ const FormularioCocomoII = () => {
       transition={{ duration: 0.4 }}
     >
       {/* Panel Izquierdo */}
-      <div className="w-full lg:w-2/5 p-4 lg:pr-6 border-b lg:border-b-0 lg:border-r border-gray-200">
+      <div className="w-full lg:w-9/16 p-4 lg:pr-6 border-b lg:border-b-0 lg:border-r border-gray-200">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-xl font-bold text-gray-800">Proyecto: {nombreProyecto}</h2>
@@ -165,7 +165,7 @@ const FormularioCocomoII = () => {
       </div>
 
       {/* Panel Derecho - Cost Drivers agrupados */}
-      <div className="w-full lg:w-3/5 p-4">
+      <div className="w-full lg:w-8/16 p-4">
         <h3 className="text-md font-bold text-center text-gray-700 mb-4 border-b pb-2">
           Factores de Coste
         </h3>
@@ -174,7 +174,7 @@ const FormularioCocomoII = () => {
           {gruposConductoresCoste.map((grupo) => (
             <div key={grupo.grupo}>
               <h4 className="text-sm font-semibold text-indigo-700 mb-2">{grupo.grupo}</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                 {grupo.factores.map((id) => {
                   const factor = conductoresCoste.find((f) => f.id === id);
                   if (!factor) return null;
