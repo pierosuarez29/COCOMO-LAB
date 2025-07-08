@@ -6,8 +6,8 @@ interface ContenedorPrincipalProps {
 
 const ContenedorPrincipal = ({ children }: ContenedorPrincipalProps) => {
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-slate-100 to-slate-300 flex items-start justify-center overflow-auto py-10 px-4">
-      <div className="w-full max-w-[1400px] bg-white rounded-3xl shadow-2xl p-8">
+    <div className="min-h-screen w-full bg-gradient-to-br from-slate-100 to-slate-300 flex justify-center items-center overflow-auto px-4 py-10">
+      <div className="bg-white rounded-3xl shadow-2xl p-10 w-full max-w-[1400px]">
         {children}
       </div>
     </div>
