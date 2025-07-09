@@ -52,7 +52,7 @@ const FormularioCocomo81Elegante = () => {
       transition={{ duration: 0.4 }}
     >
       {/* Panel Izquierdo */}
-      <div className="w-full lg:w-2/5 p-4 border-b lg:border-b-0 lg:border-r border-gray-200">
+      <div className="w-full lg:w-2/5 pl-4 pr-4 pb-4 border-b lg:border-b-0 lg:border-r border-gray-200">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-xl font-bold text-gray-800">Proyecto: {nombreProyecto}</h2>
@@ -150,7 +150,7 @@ const FormularioCocomo81Elegante = () => {
 
       {/* Panel Derecho - Factores de Coste (oculto si no se activa) */}
       <div
-        className={`w-full lg:w-3/5 p-4 transition-all duration-500 ${
+        className={`w-full lg:w-3/5 pl-4 pr-4 pb-4  transition-all duration-500 ${
           usarIntermedio ? "block" : "hidden lg:block opacity-30 pointer-events-none"
         }`}
       >
