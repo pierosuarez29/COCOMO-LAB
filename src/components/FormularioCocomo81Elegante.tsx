@@ -154,14 +154,14 @@ const FormularioCocomo81Elegante = () => {
           usarIntermedio ? "block" : "hidden lg:block opacity-30 pointer-events-none"
         }`}
       >
-        <h3 className="text-md font-bold text-center text-gray-700 mb-4 border-b pb-2">
+        <h3 className="text-md font-bold text-center text-gray-700 mb-2 border-b pb-1">
           Factores de Coste (Intermedio)
         </h3>
 
-        <div className="space-y-6">
+        <div className="space-y-3">
           {gruposCocomo81.map((grupo) => (
             <div key={grupo.grupo}>
-              <h4 className="text-sm font-semibold text-indigo-700 mb-2">{grupo.grupo}</h4>
+              <h4 className="text-sm font-semibold text-indigo-700">{grupo.grupo}</h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
                 {grupo.factores.map((id) => {
                   const factor = cocomo81CostDrivers.find((f) => f.id === id);
