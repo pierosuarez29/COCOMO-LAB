@@ -6,10 +6,11 @@ import { useNavigate } from "react-router-dom";
 
 interface Props {
   resultado: any;
+  entradas: Record<string, any>;
   onReiniciar: () => void;
 }
 
-const Paso3_ResultadosCocomoII = ({ resultado, onReiniciar }: Props) => {
+const Paso3_ResultadosCocomoII = ({ resultado, entradas, onReiniciar }: Props) => {
   const nombreProyecto = sessionStorage.getItem("nombreProyecto") || "Sin nombre";
   const navigate = useNavigate();
 
@@ -56,7 +57,7 @@ const Paso3_ResultadosCocomoII = ({ resultado, onReiniciar }: Props) => {
             exportarPDF({
               nombreProyecto,
               modelo: "COCOMO II - Post-Arquitectura",
-              entradas: {}, // puedes agregar luego las entradas reales
+              entradas,
               resultados: resultado,
             })
           }
@@ -75,5 +76,6 @@ const Paso3_ResultadosCocomoII = ({ resultado, onReiniciar }: Props) => {
     </div>
   );
 };
+
 
 export default Paso3_ResultadosCocomoII;

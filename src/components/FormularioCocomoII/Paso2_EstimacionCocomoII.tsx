@@ -7,7 +7,7 @@ import { ArrowLeft } from "lucide-react";
 
 interface Props {
   kloc: number;
-  onResultado: (res: ResultadoCocomoII) => void;
+  onResultado: (res: ResultadoCocomoII, entradas: Record<string, any>) => void;
   onVolver: () => void;
 }
 
@@ -19,10 +19,17 @@ const Paso2_EstimacionCocomoII = ({ kloc, onResultado, onVolver }: Props) => {
 
   const estimar = () => {
     const res = calcularCocomoII({ kloc, costoPersonaMes: costoPM, escala, coste });
-    onResultado(res);
-  };
 
-  return (
+    const entradas: Record<string, any> = {
+      KLOC: kloc,
+      "Costo por persona-mes": costoPM,
+      "Conductores de Escala": escala,
+      "Factores de Coste": coste,
+    };
+
+    onResultado(res, entradas);
+  };
+    return (
     <div className="h-full flex flex-col justify-between">
       <div className="overflow-y-auto pr-1 space-y-4">
         {/* Encabezado */}

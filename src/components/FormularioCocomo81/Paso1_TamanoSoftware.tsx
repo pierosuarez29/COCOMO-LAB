@@ -13,13 +13,14 @@ const Paso1_TamanoSoftware = ({ onNext }: Props) => {
   const [kloc, setKloc] = useState(0);
   const navigate = useNavigate();
 
-  const [componentes, setComponentes] = useState<Record<string, { cantidad: number; complejidad: string }>>({
-    ALI: { cantidad: 0, complejidad: "baja" },
-    AIE: { cantidad: 0, complejidad: "baja" },
-    EE: { cantidad: 0, complejidad: "baja" },
-    SE: { cantidad: 0, complejidad: "baja" },
-    CE: { cantidad: 0, complejidad: "baja" },
+  const [componentes, setComponentes] = useState<Record<string, { baja: number; media: number; alta: number }>>({
+    ALI: { baja: 0, media: 0, alta: 0 },
+    AIE: { baja: 0, media: 0, alta: 0 },
+    EE: { baja: 0, media: 0, alta: 0 },
+    SE: { baja: 0, media: 0, alta: 0 },
+    CE: { baja: 0, media: 0, alta: 0 },
   });
+
   const [ajustes, setAjustes] = useState<number[]>(Array(14).fill(3));
   const [lenguaje, setLenguaje] = useState("Java");
 
@@ -32,18 +33,38 @@ const Paso1_TamanoSoftware = ({ onNext }: Props) => {
   };
 
   const calcularPFA = () => {
-    const PFSA = Object.entries(componentes).reduce((total, [clave, { cantidad, complejidad }]) => {
-      return total + cantidad * pesos[clave as keyof typeof pesos][complejidad as keyof typeof pesos["ALI"]];
-    }, 0);
-    const FVA = ajustes.reduce((acc, v) => acc + v, 0);
-    return PFSA * (0.65 + 0.01 * FVA);
-  };
+  let PFSA = 0;
+  for (const [clave, niveles] of Object.entries(componentes)) {
+    PFSA += niveles.baja * pesos[clave as keyof typeof pesos].baja;
+    PFSA += niveles.media * pesos[clave as keyof typeof pesos].media;
+    PFSA += niveles.alta * pesos[clave as keyof typeof pesos].alta;
+  }
+  const FVA = ajustes.reduce((acc, v) => acc + v, 0);
+  return PFSA * (0.65 + 0.01 * FVA);
+};
+
 
   const calcularKLOC = () => {
     const pfa = calcularPFA();
     const ldcPorPF = equivalenciaLDCporPF.find((l) => l.lenguaje === lenguaje)?.ldcPorPF || 53;
     return parseFloat(((pfa * ldcPorPF) / 1000).toFixed(2));
   };
+
+  const calcularTodo = () => {
+    let PFSA = 0;
+    for (const [clave, niveles] of Object.entries(componentes)) {
+      PFSA += niveles.baja * pesos[clave as keyof typeof pesos].baja;
+      PFSA += niveles.media * pesos[clave as keyof typeof pesos].media;
+      PFSA += niveles.alta * pesos[clave as keyof typeof pesos].alta;
+    }
+    const FVA = ajustes.reduce((acc, v) => acc + v, 0);
+    const PFA = PFSA * (0.65 + 0.01 * FVA);
+    const ldcPorPF = equivalenciaLDCporPF.find((l) => l.lenguaje === lenguaje)?.ldcPorPF || 53;
+    const KLOC = parseFloat(((PFA * ldcPorPF) / 1000).toFixed(2));
+    return { PFSA, PFA, KLOC };
+  };
+
+
 
   return (
     <div className="h-full flex flex-col justify-between">
@@ -99,50 +120,49 @@ const Paso1_TamanoSoftware = ({ onNext }: Props) => {
           <div className="space-y-4">
             {/* Componentes de PF */}
             <div>
-              <h4 className="font-medium text-sm text-indigo-700 mb-2">Componentes de Función</h4>
+              <h4 className="font-medium text-sm text-indigo-700 mb-1">Componentes de Función</h4>
               <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-                {Object.keys(componentes).map((clave) => (
-                  <div key={clave} className="space-y-1">
-                    <label className="text-sm font-semibold text-gray-700">
-                      {clave} <span className="block text-[12px] font-normal text-gray-500">{({
-                        ALI: "Archivos Lógicos Internos",
-                        AIE: "Archivos de Interfaz Externa",
-                        EE: "Entradas Externas",
-                        SE: "Salidas Externas",
-                        CE: "Consultas Externas",
-                      } as any)[clave]}</span>
-                    </label>
-                    <div className="flex gap-2">
-                      <input
-                        type="number"
-                        min={0}
-                        value={componentes[clave].cantidad}
-                        onChange={(e) =>
-                          setComponentes((prev) => ({
-                            ...prev,
-                            [clave]: { ...prev[clave], cantidad: parseInt(e.target.value) },
-                          }))
-                        }
-                        className="w-20 px-2 py-1 border rounded-xl text-sm text-center"
-                      />
-                      <select
-                        value={componentes[clave].complejidad}
-                        onChange={(e) =>
-                          setComponentes((prev) => ({
-                            ...prev,
-                            [clave]: { ...prev[clave], complejidad: e.target.value },
-                          }))
-                        }
-                        className="w-1/2 px-2 py-1 border rounded-xl text-sm"
-                      >
-                        {Object.entries(pesos[clave as keyof typeof pesos]).map(([nivel, valor]) => (
-                          <option key={nivel} value={nivel}>{nivel.charAt(0).toUpperCase() + nivel.slice(1)} ({valor})</option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                ))}
-              </div>
+  {Object.keys(componentes).map((clave) => (
+    <div key={clave} className="space-y-2">
+      <label className="text-sm font-semibold text-gray-700 block">
+        {clave}
+        <span className="block text-[12px] font-normal text-gray-500">
+          {({
+            ALI: "Complejidad de Archivos",
+            AIE: "Interfaz Externa",
+            EE: "Entradas Externas",
+            SE: "Salidas Externas",
+            CE: "Consultas Externas",
+          } as any)[clave]}
+        </span>
+      </label>
+      {["baja", "media", "alta"].map((nivel) => (
+        <div key={nivel} className="flex items-center gap-2">
+          <label className="text-xs text-gray-600 whitespace-nowrap w-[70px]">
+            {nivel.charAt(0).toUpperCase() + nivel.slice(1)} ({pesos[clave as keyof typeof pesos][nivel as keyof typeof pesos["ALI"]]})
+          </label>
+          <input
+            type="number"
+            min={0}
+            value={componentes[clave][nivel as keyof typeof componentes["ALI"]]}
+            onChange={(e) =>
+              setComponentes((prev) => ({
+                ...prev,
+                [clave]: {
+                  ...prev[clave],
+                  [nivel]: parseInt(e.target.value),
+                },
+              }))
+            }
+            className="flex-1 px-2 py-1 border rounded-xl text-sm text-center"
+          />
+        </div>
+      ))}
+    </div>
+  ))}
+</div>
+
+
             </div>
 
             {/* Factores de Ajuste */}
@@ -188,10 +208,18 @@ const Paso1_TamanoSoftware = ({ onNext }: Props) => {
               </select>
             </div>
             <div className="pt-6">
-              <div className="text-center text-lg mb-2 text-indigo-700">
-                KLOC estimado: <strong>{calcularKLOC().toFixed(2)} KLOC</strong>
-              </div>
-            </div>
+  {(() => {
+    const { PFSA, PFA, KLOC } = calcularTodo();
+    return (
+      <div className="text-center space-y-2 text-indigo-700 text-sm">
+        <p><strong>PFSA</strong> (Puntos de Función sin ajustar): {PFSA}</p>
+        <p><strong>PFA</strong> (Ajustado con Albrecht): {PFA.toFixed(2)}</p>
+        <p><strong>KLOC estimado</strong>: {KLOC.toFixed(2)} KLOC</p>
+      </div>
+    );
+  })()}
+</div>
+
           </div>
         )}
       </div>
@@ -200,7 +228,7 @@ const Paso1_TamanoSoftware = ({ onNext }: Props) => {
       <div className="h-5 flex items-center justify-between mt-4 px-2 bg-white">
         <p className="text-gray-600 text-sm"></p>
         <button
-          onClick={() => onNext(modo === "kloc" ? kloc : calcularKLOC())}
+          onClick={() => onNext(modo === "kloc" ? kloc : calcularTodo().KLOC)}
           className="px-5 py-2 bg-indigo-600 text-white rounded-xl text-sm hover:bg-indigo-700 transition"
         >
           Siguiente: Elegir modelo de estimación

@@ -7,6 +7,8 @@ const TabsCocomo81 = () => {
   const [paso, setPaso] = useState(1);
   const [klocFinal, setKlocFinal] = useState<number>(0); // valor que viene de PF o ingreso directo
   const [resultados, setResultados] = useState<any>(null); // resultado del cálculo
+  const [entradas, setEntradas] = useState<Record<string, any>>({});
+
 
   const cambiarPaso = (nuevoPaso: number) => setPaso(nuevoPaso);
 
@@ -59,19 +61,23 @@ const TabsCocomo81 = () => {
         )}
         {paso === 2 && (
           <Paso2_Estimacion
-            kloc={klocFinal}
-            onResultado={(res) => {
-              setResultados(res);
-              cambiarPaso(3);
-            }}
-            onVolver={() => cambiarPaso(1)}
-          />
+  kloc={klocFinal}
+  onResultado={(res, datosEntrada) => {
+    setResultados(res);
+    setEntradas(datosEntrada);
+    cambiarPaso(3);
+  }}
+  onVolver={() => cambiarPaso(1)}
+/>
+
         )}
         {paso === 3 && (
           <Paso3_Resultados
-            resultado={resultados}
-            onReiniciar={() => cambiarPaso(1)}
-          />
+  resultado={resultados}
+  entradas={entradas}
+  onReiniciar={() => cambiarPaso(1)}
+/>
+
         )}
       </div>
     </div>

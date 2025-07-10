@@ -7,6 +7,7 @@ const TabsCocomoII = () => {
   const [paso, setPaso] = useState(1);
   const [klocFinal, setKlocFinal] = useState<number>(0);
   const [resultado, setResultado] = useState<any>(null);
+  const [entradas, setEntradas] = useState<Record<string, any>>({});
 
   const tabs = ["Tamaño del Software", "Estimación", "Resultados"];
 
@@ -59,19 +60,21 @@ const TabsCocomoII = () => {
         )}
         {paso === 2 && (
           <Paso2_EstimacionCocomoII
-            kloc={klocFinal}
-            onResultado={(res) => {
-              setResultado(res);
-              cambiarPaso(3);
-            }}
-            onVolver={() => cambiarPaso(1)}
-          />
+  kloc={klocFinal}
+  onResultado={(res, datosEntrada) => {
+    setResultado(res);
+    setEntradas(datosEntrada);
+    cambiarPaso(3);
+  }}
+  onVolver={() => cambiarPaso(1)}
+/>
         )}
         {paso === 3 && (
           <Paso3_ResultadosCocomoII
-            resultado={resultado}
-            onReiniciar={() => cambiarPaso(1)}
-          />
+  resultado={resultado}
+  entradas={entradas}
+  onReiniciar={() => cambiarPaso(1)}
+/>
         )}
       </div>
     </div>

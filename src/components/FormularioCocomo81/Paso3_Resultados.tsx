@@ -7,10 +7,11 @@ import { useNavigate } from "react-router-dom";
 
 interface Props {
   resultado: CocomoResult | null;
+  entradas: Record<string, any>;
   onReiniciar: () => void;
 }
 
-const Paso3_Resultados = ({ resultado, onReiniciar }: Props) => {
+const Paso3_Resultados = ({ resultado, entradas, onReiniciar }: Props) => {
   const nombreProyecto = sessionStorage.getItem("nombreProyecto") || "Sin nombre";
   const navigate = useNavigate();
 
@@ -57,7 +58,7 @@ const Paso3_Resultados = ({ resultado, onReiniciar }: Props) => {
             exportarPDF({
               nombreProyecto,
               modelo: "COCOMO 81",
-              entradas: {},
+              entradas,
               resultados: resultado,
             })
           }

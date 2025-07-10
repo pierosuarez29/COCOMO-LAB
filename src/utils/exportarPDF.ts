@@ -18,18 +18,39 @@ export const exportarPDF = ({ nombreProyecto, modelo, entradas, resultados }: Ex
 
   doc.setFontSize(11);
   doc.setFont("helvetica", "normal");
-  doc.text(`Proyecto: ${nombreProyecto}`, 20, 30);
-  doc.text(`Modelo: ${modelo}`, 20, 36);
-  doc.text(`Fecha: ${fecha}`, 20, 42);
+  doc.text(`Proyecto: ${String(nombreProyecto ?? "N/A")}`, 20, 30);
+  doc.text(`Modelo: ${String(modelo ?? "N/A")}`, 20, 36);
+  doc.text(`Fecha: ${String(fecha ?? "N/A")}`, 20, 42);
 
   doc.setFont("helvetica", "bold");
   doc.text("Entradas", 20, 52);
   doc.setFont("helvetica", "normal");
 
   let y = 60;
-  Object.entries(entradas).forEach(([key, value]) => {
-    doc.text(`${key}: ${value}`, 25, y);
-    y += 6;
+
+  Object.entries(entradas).forEach(([clave, valor]) => {
+    if (typeof valor === "object" && valor !== null) {
+      doc.setFont("helvetica", "bold");
+      doc.text(`${String(clave)}:`, 25, y);
+      y += 6;
+
+      Object.entries(valor).forEach(([subClave, subValor]) => {
+        doc.setFont("helvetica", "normal");
+        doc.text(`• ${String(subClave)}: ${String(subValor ?? "N/A")}`, 30, y);
+        y += 5;
+      });
+    } else {
+      doc.setFont("helvetica", "bold");
+      doc.text(`${String(clave)}:`, 25, y);
+      doc.setFont("helvetica", "normal");
+      doc.text(`${String(valor ?? "N/A")}`, 80, y);
+      y += 6;
+    }
+
+    if (y > 270) {
+      doc.addPage();
+      y = 20;
+    }
   });
 
   doc.setFont("helvetica", "bold");
@@ -37,10 +58,15 @@ export const exportarPDF = ({ nombreProyecto, modelo, entradas, resultados }: Ex
   doc.setFont("helvetica", "normal");
 
   y += 12;
-  Object.entries(resultados).forEach(([key, value]) => {
-    doc.text(`${key}: ${value}`, 25, y);
+  Object.entries(resultados).forEach(([clave, valor]) => {
+    doc.text(`${String(clave)}: ${String(valor ?? "N/A")}`, 25, y);
     y += 6;
+
+    if (y > 280) {
+      doc.addPage();
+      y = 20;
+    }
   });
 
-  doc.save(`estimacion_${nombreProyecto}.pdf`);
+  doc.save(`estimacion_${String(nombreProyecto ?? "proyecto")}.pdf`);
 };
