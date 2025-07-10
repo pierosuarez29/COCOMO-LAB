@@ -64,7 +64,7 @@ export const ResultadosCasosUso = ({
           <div className="flex justify-center mt-4">
             <button
               onClick={onVolver}
-              className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors"
+              className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors cursor-pointer"
             >
               Volver al Formulario
             </button>

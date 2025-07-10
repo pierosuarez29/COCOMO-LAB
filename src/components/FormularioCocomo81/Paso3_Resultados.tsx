@@ -2,13 +2,15 @@ import { useEffect } from "react";
 import Swal from "sweetalert2";
 import { exportarPDF } from "../../utils/exportarPDF";
 import { CocomoResult } from "../../types/cocomo81";
+import { ArrowLeft } from "lucide-react";
 
 interface Props {
   resultado: CocomoResult | null;
   onReiniciar: () => void;
+  onVolverPaso2: () => void; // Nuevo prop para volver al paso 2
 }
 
-const Paso3_Resultados = ({ resultado, onReiniciar }: Props) => {
+const Paso3_Resultados = ({ resultado, onReiniciar, onVolverPaso2 }: Props) => {
   const nombreProyecto = sessionStorage.getItem("nombreProyecto") || "Sin nombre";
 
   useEffect(() => {
@@ -19,7 +21,7 @@ const Paso3_Resultados = ({ resultado, onReiniciar }: Props) => {
         text: "Debes completar la estimación en el paso anterior antes de ver los resultados.",
         confirmButtonText: "Volver",
       }).then(() => {
-        onReiniciar(); // Volver al paso anterior
+        onReiniciar();
       });
     }
   }, [resultado, onReiniciar]);
@@ -29,7 +31,16 @@ const Paso3_Resultados = ({ resultado, onReiniciar }: Props) => {
   return (
     <div className="h-full flex flex-col justify-between">
       <div className="overflow-y-auto pr-1 space-y-4">
-        <h2 className="text-xl font-semibold text-gray-800">Paso 3: Resultados</h2>
+        <div className="flex justify-between items-center">
+          {/* <div className="cursor-pointer" onClick={onVolverPaso2}>
+            <span className="flex items-center gap-1 text-sm text-blue-600 hover:underline">
+              <ArrowLeft className="w-4 h-4" /> Volver
+            </span>
+          </div> */}
+          <h2 className="text-xl font-semibold text-gray-800 text-center flex-1 -ml-10">
+            Paso 3: Resultados
+          </h2>
+        </div>
 
         <div className="bg-gray-100 p-6 rounded-xl text-gray-800 space-y-4 text-lg">
           <p><strong>Esfuerzo estimado:</strong> {resultado.esfuerzo} personas-mes</p>
@@ -39,7 +50,6 @@ const Paso3_Resultados = ({ resultado, onReiniciar }: Props) => {
         </div>
       </div>
 
-      {/* Footer fijo con botones */}
       <div className="h-16 flex items-center justify-end gap-4 mt-4 px-2 bg-white">
         <button
           onClick={() =>
@@ -50,14 +60,14 @@ const Paso3_Resultados = ({ resultado, onReiniciar }: Props) => {
               resultados: resultado,
             })
           }
-          className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm"
+          className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm cursor-pointer"
         >
           📄 Exportar PDF
         </button>
 
         <button
           onClick={onReiniciar}
-          className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-xl text-sm"
+          className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-xl text-sm cursor-pointer"
         >
           🔄 Volver a editar
         </button>

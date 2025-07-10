@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { factoresAlbrecht } from "../../data/albrechtFactors";
 import { equivalenciaLDCporPF } from "../../data/ldcPorLenguaje";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 interface Props {
   onNext: (kloc: number) => void;
@@ -9,6 +11,7 @@ interface Props {
 const Paso1_TamanoSoftware = ({ onNext }: Props) => {
   const [modo, setModo] = useState<"kloc" | "pf">("kloc");
   const [kloc, setKloc] = useState(0);
+  const navigate = useNavigate();
 
   const [componentes, setComponentes] = useState<Record<string, { cantidad: number; complejidad: string }>>({
     ALI: { cantidad: 0, complejidad: "baja" },
@@ -39,13 +42,23 @@ const Paso1_TamanoSoftware = ({ onNext }: Props) => {
   const calcularKLOC = () => {
     const pfa = calcularPFA();
     const ldcPorPF = equivalenciaLDCporPF.find((l) => l.lenguaje === lenguaje)?.ldcPorPF || 53;
-    return (pfa * ldcPorPF) / 1000;
+    return parseFloat(((pfa * ldcPorPF) / 1000).toFixed(2));
   };
 
   return (
     <div className="h-full flex flex-col justify-between">
       <div className="overflow-y-auto pr-1 space-y-4">
-        <h2 className="text-lg font-semibold text-gray-800">Paso 1: Tamaño del Software</h2>
+        <div className="flex justify-between items-center">
+          <div className="cursor-pointer" onClick={() => navigate("/modelo")}> 
+            <span className="flex items-center gap-1 text-sm text-blue-600 hover:underline">
+              <ArrowLeft className="w-4 h-4" />
+              Volver
+            </span>
+          </div>
+          <h2 className="text-lg font-semibold text-gray-800 text-center flex-1 -ml-10">
+            Paso 1: Tamaño del Software
+          </h2>
+        </div>
 
         {/* Tabs */}
         <div className="flex gap-2">
@@ -75,7 +88,7 @@ const Paso1_TamanoSoftware = ({ onNext }: Props) => {
                 type="number"
                 min={0}
                 value={kloc}
-                onChange={(e) => setKloc(parseFloat(e.target.value))}
+                onChange={(e) => setKloc(parseFloat(parseFloat(e.target.value).toFixed(2)))}
                 className="w-32 px-3 py-2 border rounded-lg text-center text-lg font-medium"
               />
             </div>
@@ -88,7 +101,7 @@ const Paso1_TamanoSoftware = ({ onNext }: Props) => {
             <div>
               <h4 className="font-medium text-sm text-indigo-700 mb-2">Componentes de Función</h4>
               <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-                {["ALI", "AIE", "EE", "SE", "CE"].map((clave) => (
+                {Object.keys(componentes).map((clave) => (
                   <div key={clave} className="space-y-1">
                     <label className="text-sm font-semibold text-gray-700">
                       {clave} <span className="block text-[12px] font-normal text-gray-500">{({
@@ -150,7 +163,7 @@ const Paso1_TamanoSoftware = ({ onNext }: Props) => {
                     >
                       {[1, 2, 3, 4, 5].map((v) => (
                         <option key={v} value={v}>
-                          {v} - {["Ninguna", "Baja", "Media", "Alta", "Esencial"][v - 1]}
+                          {v} - {"Ninguna Baja Media Alta Esencial".split(" ")[v - 1]}
                         </option>
                       ))}
                     </select>
@@ -174,24 +187,18 @@ const Paso1_TamanoSoftware = ({ onNext }: Props) => {
                 ))}
               </select>
             </div>
-             <div className="pt-6">
-            <div className="text-center text-lg mb-2 text-indigo-700">
-              KLOC estimado: <strong>{calcularKLOC().toFixed(2)} KLOC</strong>
+            <div className="pt-6">
+              <div className="text-center text-lg mb-2 text-indigo-700">
+                KLOC estimado: <strong>{calcularKLOC().toFixed(2)} KLOC</strong>
+              </div>
             </div>
-          </div>
           </div>
         )}
       </div>
 
-
-
-
-
       {/* Footer fijo con botón */}
-      <div className="h-16 flex items-center justify-between  mt-4 px-2 bg-white">
-        <p className="text-gray-600 text-sm">
-
-        </p>
+      <div className="h-16 flex items-center justify-between mt-4 px-2 bg-white">
+        <p className="text-gray-600 text-sm"></p>
         <button
           onClick={() => onNext(modo === "kloc" ? kloc : calcularKLOC())}
           className="px-5 py-2 bg-indigo-600 text-white rounded-xl text-sm hover:bg-indigo-700 transition"

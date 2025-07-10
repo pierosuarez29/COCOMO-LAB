@@ -84,7 +84,7 @@ const FormularioCocomo81Elegante = () => {
             🧮 Ingresar KLOC
           </button>
           <button
-            className={`px-4 py-2 rounded-t-lg text-sm font-medium ${
+            className={`px-4 py-2 rounded-t-lg text-sm font-medium cursor-pointer${
               tab === "pf"
                 ? "bg-indigo-600 text-white"
                 : "bg-gray-200 text-gray-700 hover:bg-gray-300"

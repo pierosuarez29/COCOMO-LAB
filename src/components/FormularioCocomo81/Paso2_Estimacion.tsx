@@ -2,6 +2,8 @@ import { useState } from "react";
 import { calcularCocomo81, calcularCocomo81Intermedio } from "../../utils/cocomo81";
 import { CocomoResult } from "../../types/cocomo81";
 import { cocomo81CostDrivers, FactorNivel, gruposCocomo81 } from "../../data/cocomo81Factors";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 interface Props {
   kloc: number;
@@ -13,6 +15,7 @@ const Paso2_Estimacion = ({ kloc, onResultado, onVolver }: Props) => {
   const [usarIntermedio, setUsarIntermedio] = useState(false);
   const [modo, setModo] = useState<"orgánico" | "semiacoplado" | "empotrado">("orgánico");
   const [factores, setFactores] = useState<Record<string, FactorNivel>>({});
+  const navigate = useNavigate();
 
   const calcularFEC = () => {
     return cocomo81CostDrivers.reduce((acc, factor) => {
@@ -33,7 +36,17 @@ const Paso2_Estimacion = ({ kloc, onResultado, onVolver }: Props) => {
   return (
     <div className="h-full flex flex-col justify-between">
       <div className="overflow-y-auto pr-1 space-y-4">
-        <h2 className="text-xl font-semibold text-gray-800">Paso 2: Estimación COCOMO 81</h2>
+        <div className="flex justify-between items-center">
+          <div className="cursor-pointer" onClick={() => navigate("/modelo")}> 
+            <span className="flex items-center gap-1 text-sm text-blue-600 hover:underline">
+              <ArrowLeft className="w-4 h-4" />
+              Volver
+            </span>
+          </div>
+          <h2 className="text-lg font-semibold text-gray-800 text-center flex-1 -ml-10">
+            Paso 2: Estimación COCOMO 81
+          </h2>
+        </div>
 
         <div className="grid sm:grid-cols-2 gap-4">
           <div>
@@ -41,7 +54,7 @@ const Paso2_Estimacion = ({ kloc, onResultado, onVolver }: Props) => {
             <input
               type="number"
               readOnly
-              value={kloc}
+              value={kloc.toFixed(2)}
               className="w-full px-3 py-2 border rounded-xl bg-gray-100"
             />
           </div>
@@ -117,16 +130,12 @@ const Paso2_Estimacion = ({ kloc, onResultado, onVolver }: Props) => {
 
       {/* Footer fijo con botones */}
       <div className="h-16 flex items-center justify-between mt-4 px-2 bg-white ">
-        <button
-          onClick={onVolver}
-          className="text-sm text-blue-600 hover:underline"
-        >
-          ⭠ Volver a tamaño del software
+        <button>
         </button>
 
         <button
           onClick={estimar}
-          className="px-4 py-2 bg-indigo-600 text-white rounded-xl text-sm hover:bg-indigo-700 transition"
+          className="px-4 py-2 bg-indigo-600 text-white rounded-xl text-sm hover:bg-indigo-700 transition cursor-pointer"
         >
           Obtener estimación
         </button>
