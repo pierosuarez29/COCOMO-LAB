@@ -43,6 +43,12 @@ const PantallaSeleccionModelo = () => {
           >
             COCOMO II
           </button>
+          <button
+            onClick={() => navigate("/casos-uso")}
+            className="px-6 py-3 w-full sm:w-40 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition font-semibold"
+          >
+            Casos de Uso
+          </button>
         </div>
 
         <button

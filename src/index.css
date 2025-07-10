@@ -1,6 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
-/* Puedes agregar estilos globales aquí si deseas */
+/* Estilos tipográficos base */
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.25;
+    letter-spacing: -0.025em;
+  }
+  
+  h1 { 
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+  
+  h2 { 
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+  
+  h3 { 
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+  
+  body {
+    color: #1f2937;
+    background-color: #f9fafb;
+  }
+  
+  input, select, textarea, button {
+    outline: none;
+  }
+  
+  input:focus, select:focus, textarea:focus, button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5);
+  }
+  
+  /* Media queries para tamaños de pantalla más grandes */
+  @media (min-width: 768px) {
+    h1 {
+      font-size: 1.875rem;
+      line-height: 2.25rem;
+    }
+    
+    h2 {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+  }
+}
 
 /* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;

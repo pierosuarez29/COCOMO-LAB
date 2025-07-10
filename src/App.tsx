@@ -5,6 +5,7 @@ import PantallaNombreProyecto from "./components/PantallaNombreProyecto";
 import PantallaSeleccionModelo from "./components/PantallaSeleccionModelo";
 import TabsCocomo81 from "./components/FormularioCocomo81/TabsCocomo81";
 import FormularioCocomoII from "./components/FormularioCocomoII";
+import FormularioCasosUso from "./components/FormularioCasosUso";
 
 function AppRoutes() {
   return (
@@ -15,6 +16,7 @@ function AppRoutes() {
         <Route path="/modelo" element={<PantallaSeleccionModelo />} />
         <Route path="/cocomo81" element={<TabsCocomo81 />} />
         <Route path="/cocomoII" element={<FormularioCocomoII />} />
+        <Route path="/casos-uso" element={<FormularioCasosUso />} />
       </Routes>
     </ContenedorPrincipal>
   );
