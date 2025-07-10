@@ -1,0 +1,69 @@
+import { useEffect } from "react";
+import Swal from "sweetalert2";
+import { exportarPDF } from "../../utils/exportarPDF";
+import { CocomoResult } from "../../types/cocomo81";
+
+interface Props {
+  resultado: CocomoResult | null;
+  onReiniciar: () => void;
+}
+
+const Paso3_Resultados = ({ resultado, onReiniciar }: Props) => {
+  const nombreProyecto = sessionStorage.getItem("nombreProyecto") || "Sin nombre";
+
+  useEffect(() => {
+    if (!resultado) {
+      Swal.fire({
+        icon: "warning",
+        title: "Resultado no disponible",
+        text: "Debes completar la estimación en el paso anterior antes de ver los resultados.",
+        confirmButtonText: "Volver",
+      }).then(() => {
+        onReiniciar(); // Volver al paso anterior
+      });
+    }
+  }, [resultado, onReiniciar]);
+
+  if (!resultado) return null;
+
+  return (
+    <div className="h-full flex flex-col justify-between">
+      <div className="overflow-y-auto pr-1 space-y-4">
+        <h2 className="text-xl font-semibold text-gray-800">Paso 3: Resultados</h2>
+
+        <div className="bg-gray-100 p-6 rounded-xl text-gray-800 space-y-4 text-lg">
+          <p><strong>Esfuerzo estimado:</strong> {resultado.esfuerzo} personas-mes</p>
+          <p><strong>Duración estimada:</strong> {resultado.tiempo} meses</p>
+          <p><strong>Personas necesarias:</strong> {resultado.personas}</p>
+          <p><strong>Costo estimado:</strong> S/. {resultado.costo}</p>
+        </div>
+      </div>
+
+      {/* Footer fijo con botones */}
+      <div className="h-16 flex items-center justify-end gap-4 mt-4 px-2 bg-white">
+        <button
+          onClick={() =>
+            exportarPDF({
+              nombreProyecto,
+              modelo: "COCOMO 81",
+              entradas: {},
+              resultados: resultado,
+            })
+          }
+          className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm"
+        >
+          📄 Exportar PDF
+        </button>
+
+        <button
+          onClick={onReiniciar}
+          className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-xl text-sm"
+        >
+          🔄 Volver a editar
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Paso3_Resultados;

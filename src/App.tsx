@@ -3,7 +3,7 @@ import ContenedorPrincipal from "./components/ContenedorPrincipal";
 import PantallaBienvenida from "./components/PantallaBienvenida";
 import PantallaNombreProyecto from "./components/PantallaNombreProyecto";
 import PantallaSeleccionModelo from "./components/PantallaSeleccionModelo";
-import FormularioCocomo81Elegante from "./components/FormularioCocomo81Elegante";
+import TabsCocomo81 from "./components/FormularioCocomo81/TabsCocomo81";
 import FormularioCocomoII from "./components/FormularioCocomoII";
 
 function AppRoutes() {
@@ -13,7 +13,7 @@ function AppRoutes() {
         <Route path="/" element={<PantallaBienvenida />} />
         <Route path="/nombre" element={<PantallaNombreProyecto />} />
         <Route path="/modelo" element={<PantallaSeleccionModelo />} />
-        <Route path="/cocomo81" element={<FormularioCocomo81Elegante />} />
+        <Route path="/cocomo81" element={<TabsCocomo81 />} />
         <Route path="/cocomoII" element={<FormularioCocomoII />} />
       </Routes>
     </ContenedorPrincipal>
