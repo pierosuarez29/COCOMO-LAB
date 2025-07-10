@@ -175,7 +175,7 @@ const Paso1_TamanoSoftware = ({ onNext }: Props) => {
               </select>
             </div>
              <div className="pt-6">
-            <div className="text-left text-gray-600 text-lg mb-2">
+            <div className="text-center text-lg mb-2 text-indigo-700">
               KLOC estimado: <strong>{calcularKLOC().toFixed(2)} KLOC</strong>
             </div>
           </div>
