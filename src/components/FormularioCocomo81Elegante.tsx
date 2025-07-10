@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { calcularCocomo81, calcularCocomo81Intermedio } from "../utils/cocomo81";
 import { CocomoInputs, CocomoResult } from "../types/cocomo81";
 import { cocomo81CostDrivers, FactorNivel, gruposCocomo81 } from "../data/cocomo81Factors";
+import { factoresAlbrecht } from "../data/albrechtFactors";
 import { motion } from "framer-motion";
 import { exportarPDF } from "../utils/exportarPDF";
 
@@ -14,6 +15,9 @@ const FormularioCocomo81Elegante = () => {
   const [usarIntermedio, setUsarIntermedio] = useState(false);
   const [factores, setFactores] = useState<Record<string, FactorNivel>>({});
   const [resultado, setResultado] = useState<CocomoResult | null>(null);
+  const [tab, setTab] = useState<"kloc" | "pf">("kloc");
+  const [ajustes, setAjustes] = useState<number[]>(Array(14).fill(3)); // valor neutro
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -66,9 +70,35 @@ const FormularioCocomo81Elegante = () => {
           </button>
         </div>
 
+        {/* Tabs de entrada */}
+        <div className="flex gap-2 mb-4">
+          <button
+            className={`px-4 py-2 rounded-t-lg text-sm font-medium ${
+              tab === "kloc"
+                ? "bg-indigo-600 text-white"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            }`}
+            onClick={() => setTab("kloc")}
+            type="button"
+          >
+            🧮 Ingresar KLOC
+          </button>
+          <button
+            className={`px-4 py-2 rounded-t-lg text-sm font-medium ${
+              tab === "pf"
+                ? "bg-indigo-600 text-white"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            }`}
+            onClick={() => setTab("pf")}
+            type="button"
+          >
+            🧾 Puntos de Función
+          </button>
+        </div>
+
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="w-full md:w-1/2">
+          {tab === "kloc" && (
+            <div>
               <label className="text-sm font-medium block mb-1">Tamaño del proyecto (KLOC)</label>
               <input
                 type="number"
@@ -81,20 +111,81 @@ const FormularioCocomo81Elegante = () => {
                 required
               />
             </div>
+          )}
 
-            <div className="w-full md:w-1/2">
-              <label className="text-sm font-medium block mb-1">Modo del proyecto</label>
-              <select
-                name="mode"
-                className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring"
-                value={inputs.mode}
-                onChange={handleChange}
-              >
-                <option value="orgánico">Orgánico</option>
-                <option value="semiacoplado">Semiacoplado</option>
-                <option value="empotrado">Empotrado</option>
-              </select>
-            </div>
+          {tab === "pf" && (
+  <div className="space-y-4 border border-indigo-200 rounded-xl p-4">
+    <h3 className="text-sm font-bold text-indigo-700">Entradas para Puntos de Función</h3>
+
+    <div className="space-y-2">
+      {[
+        { nombre: "Archivos Lógicos Internos (ALI)", clave: "ALI" },
+        { nombre: "Archivos de Interfaz Externa (AIE)", clave: "AIE" },
+        { nombre: "Entradas Externas (EE)", clave: "EE" },
+        { nombre: "Salidas Externas (SE)", clave: "SE" },
+        { nombre: "Consultas Externas (CE)", clave: "CE" },
+      ].map((componente) => (
+        <div key={componente.clave} className="flex flex-col sm:flex-row gap-2 items-center">
+          <label className="w-full sm:w-2/5 text-sm text-gray-700">{componente.nombre}</label>
+          <input
+            type="number"
+            min={0}
+            className="w-24 px-2 py-1 border rounded-xl text-sm"
+            placeholder="Cantidad"
+            name={`cantidad-${componente.clave}`}
+          />
+          <select className="w-36 px-2 py-1 border rounded-xl text-sm" name={`complejidad-${componente.clave}`}>
+            <option value="baja">Baja</option>
+            <option value="media">Media</option>
+            <option value="alta">Alta</option>
+          </select>
+        </div>
+      ))}
+    </div>
+
+    {/* Panel de Factores de Ajuste de Albrecht */}
+<div className="mt-6 border border-indigo-200 rounded-xl p-4 space-y-4">
+  <h3 className="text-sm font-bold text-indigo-700 mb-2">Factores de Ajuste (Albrecht)</h3>
+
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    {factoresAlbrecht.map((nombre, index) => (
+      <div key={index} className="flex flex-col">
+        <label className="text-sm text-gray-700 mb-1">{index + 1}. {nombre}</label>
+        <select
+          className="px-2 py-1 border rounded-lg text-sm"
+          value={ajustes[index] || 3}
+          onChange={(e) => {
+            const nuevos = [...ajustes];
+            nuevos[index] = parseInt(e.target.value);
+            setAjustes(nuevos);
+          }}
+        >
+          {[1, 2, 3, 4, 5].map((v) => (
+            <option key={v} value={v}>{v} - {[
+              "Ninguna", "Baja", "Media", "Alta", "Esencial"
+            ][v - 1]}</option>
+          ))}
+        </select>
+      </div>
+    ))}
+  </div>
+</div>
+
+  </div>
+)}
+
+          <div>
+            <label className="text-sm font-medium block mb-1">Modo del proyecto</label>
+            <select
+              name="mode"
+              className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring"
+              value={inputs.mode}
+              onChange={handleChange}
+            >
+              <option value="orgánico">Orgánico</option>
+              <option value="semiacoplado">Semiacoplado</option>
+              <option value="empotrado">Empotrado</option>
+            </select>
           </div>
 
           <div className="flex items-center gap-3 pt-4">
@@ -148,12 +239,8 @@ const FormularioCocomo81Elegante = () => {
         )}
       </div>
 
-      {/* Panel Derecho - Factores de Coste (oculto si no se activa) */}
-      <div
-        className={`w-full lg:w-3/5 pl-4 pr-4 pb-4  transition-all duration-500 ${
-          usarIntermedio ? "block" : "hidden lg:block opacity-30 pointer-events-none"
-        }`}
-      >
+      {/* Panel Derecho - Factores de Coste */}
+      <div className={`w-full lg:w-3/5 pl-4 pr-4 pb-4 transition-all duration-500 ${usarIntermedio ? "block" : "hidden lg:block opacity-30 pointer-events-none"}`}>
         <h3 className="text-md font-bold text-center text-gray-700 mb-2 border-b pb-1">
           Factores de Coste (Intermedio)
         </h3>
