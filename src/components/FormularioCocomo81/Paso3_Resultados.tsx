@@ -5,17 +5,14 @@ import { CocomoResult } from "../../types/cocomo81";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-
 interface Props {
   resultado: CocomoResult | null;
   onReiniciar: () => void;
-  onVolverPaso2: () => void; // Nuevo prop para volver al paso 2
 }
 
-const Paso3_Resultados = ({ resultado, onReiniciar, onVolverPaso2 }: Props) => {
+const Paso3_Resultados = ({ resultado, onReiniciar }: Props) => {
   const nombreProyecto = sessionStorage.getItem("nombreProyecto") || "Sin nombre";
   const navigate = useNavigate();
-
 
   useEffect(() => {
     if (!resultado) {
@@ -36,7 +33,7 @@ const Paso3_Resultados = ({ resultado, onReiniciar, onVolverPaso2 }: Props) => {
     <div className="h-full flex flex-col justify-between">
       <div className="overflow-y-auto pr-1 space-y-4">
         <div className="flex justify-between items-center">
-          <div className="cursor-pointer" onClick={() => navigate("/modelo")}> 
+          <div className="cursor-pointer" onClick={() => navigate("/modelo")}>
             <span className="flex items-center gap-1 text-sm text-blue-600 hover:underline">
               <ArrowLeft className="w-4 h-4" /> Volver
             </span>
