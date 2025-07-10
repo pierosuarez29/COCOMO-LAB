@@ -129,7 +129,7 @@ const Paso2_Estimacion = ({ kloc, onResultado, onVolver }: Props) => {
       </div>
 
       {/* Footer fijo con botones */}
-      <div className="h-16 flex items-center justify-between mt-4 px-2 bg-white ">
+      <div className="h-5 flex items-center justify-between mt-4 px-2 bg-white ">
         <button>
         </button>
 

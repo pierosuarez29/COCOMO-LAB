@@ -120,7 +120,7 @@ const Paso2_EstimacionCocomoII = ({ kloc, onResultado, onVolver }: Props) => {
       </div>
 
       {/* Footer fijo */}
-      <div className="h-16 flex items-center justify-between mt-4 px-2 bg-white">
+      <div className="h-5 flex items-center justify-between mt-4 px-2 bg-white">
         <button onClick={onVolver} className="text-sm text-blue-600 hover:underline">
           {/* ⭠ Volver a tamaño del software */}
         </button>

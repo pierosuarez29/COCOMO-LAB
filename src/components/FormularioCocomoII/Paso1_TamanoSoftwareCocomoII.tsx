@@ -182,7 +182,7 @@ const Paso1_TamanoSoftwareCocomoII = ({ onNext }: Props) => {
         )}
       </div>
 
-      <div className="h-16 flex items-center justify-between mt-4 px-2 bg-white">
+      <div className="h-5 flex items-center justify-between mt-4 px-2 bg-white">
         <p className="text-gray-600 text-sm"></p>
         <button
           onClick={() => onNext(modo === "kloc" ? kloc : calcularKLOC())}
