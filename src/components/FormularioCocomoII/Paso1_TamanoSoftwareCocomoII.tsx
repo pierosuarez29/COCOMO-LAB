@@ -12,6 +12,8 @@ const Paso1_TamanoSoftwareCocomoII = ({ onNext }: Props) => {
   const [modo, setModo] = useState<"kloc" | "pf">("kloc");
   const [kloc, setKloc] = useState(0);
   const navigate = useNavigate();
+  const [usarAlbrecht, setUsarAlbrecht] = useState(true);
+
 
   const [componentes, setComponentes] = useState<Record<string, { baja: number; media: number; alta: number }>>({
     ALI: { baja: 0, media: 0, alta: 0 },
@@ -137,20 +139,35 @@ const Paso1_TamanoSoftwareCocomoII = ({ onNext }: Props) => {
 
             {/* Factores de Ajuste */}
             <div>
-              <h4 className="font-medium text-sm text-indigo-700 mb-1">Factores de Ajuste (Albrecht)</h4>
+              <div className="flex items-center gap-2 mb-1">
+              <h4 className="font-medium text-sm text-indigo-700">
+                  Factores de Ajuste (Albrecht)
+                </h4>
+                <label className="flex items-center gap-1 text-sm text-gray-600">
+                  <span>Usar</span>
+                  <input
+                    type="checkbox"
+                    checked={usarAlbrecht}
+                    onChange={() => setUsarAlbrecht(!usarAlbrecht)}
+                    className="w-4 h-4 accent-indigo-600"
+                  />
+                </label>
+              </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
                 {factoresAlbrecht.map((nombre, i) => (
                   <div key={i}>
                     <label className="text-xs">{i + 1}. {nombre}</label>
                     <select
-                      value={ajustes[i]}
-                      onChange={(e) => {
-                        const nuevos = [...ajustes];
-                        nuevos[i] = parseInt(e.target.value);
-                        setAjustes(nuevos);
-                      }}
-                      className="w-5/6 px-2 py-1 border rounded-xl text-sm"
-                    >
+  disabled={!usarAlbrecht}
+  value={ajustes[i]}
+  onChange={(e) => {
+    const nuevos = [...ajustes];
+    nuevos[i] = parseInt(e.target.value);
+    setAjustes(nuevos);
+  }}
+  className="w-5/6 px-2 py-1 border rounded-xl text-sm bg-white disabled:bg-gray-100 disabled:text-gray-400"
+>
+
                       {[1, 2, 3, 4, 5].map((v) => (
                         <option key={v} value={v}>
                           {v} - {"Ninguna Baja Media Alta Esencial".split(" ")[v - 1]}
@@ -189,14 +206,14 @@ const Paso1_TamanoSoftwareCocomoII = ({ onNext }: Props) => {
       PFSA += niveles.alta * pesos[clave as keyof typeof pesos].alta;
     }
     const FVA = ajustes.reduce((acc, v) => acc + v, 0);
-    const PFA = PFSA * (0.65 + 0.01 * FVA);
+    const PFA = usarAlbrecht ? PFSA * (0.65 + 0.01 * FVA) : PFSA;
     const ldcPorPF = equivalenciaLDCporPF.find((l) => l.lenguaje === lenguaje)?.ldcPorPF || 53;
     const KLOC = parseFloat(((PFA * ldcPorPF) / 1000).toFixed(2));
 
     return (
       <div className="text-center space-y-2 text-indigo-700 text-sm">
         <p><strong>PFSA</strong> (Puntos de Función sin ajustar): {PFSA}</p>
-        <p><strong>PFA</strong> (Ajustado con Albrecht): {PFA.toFixed(2)}</p>
+        <p><strong>PFA</strong> ({usarAlbrecht ? "Ajustado con Albrecht" : "Sin ajustar"}): {PFA.toFixed(2)}</p>
         <p><strong>KLOC estimado</strong>: {KLOC.toFixed(2)} KLOC</p>
       </div>
     );
