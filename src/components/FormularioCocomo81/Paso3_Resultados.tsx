@@ -3,6 +3,8 @@ import Swal from "sweetalert2";
 import { exportarPDF } from "../../utils/exportarPDF";
 import { CocomoResult } from "../../types/cocomo81";
 import { ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
 
 interface Props {
   resultado: CocomoResult | null;
@@ -12,6 +14,8 @@ interface Props {
 
 const Paso3_Resultados = ({ resultado, onReiniciar, onVolverPaso2 }: Props) => {
   const nombreProyecto = sessionStorage.getItem("nombreProyecto") || "Sin nombre";
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     if (!resultado) {
@@ -32,11 +36,11 @@ const Paso3_Resultados = ({ resultado, onReiniciar, onVolverPaso2 }: Props) => {
     <div className="h-full flex flex-col justify-between">
       <div className="overflow-y-auto pr-1 space-y-4">
         <div className="flex justify-between items-center">
-          {/* <div className="cursor-pointer" onClick={onVolverPaso2}>
+          <div className="cursor-pointer" onClick={() => navigate("/modelo")}> 
             <span className="flex items-center gap-1 text-sm text-blue-600 hover:underline">
               <ArrowLeft className="w-4 h-4" /> Volver
             </span>
-          </div> */}
+          </div>
           <h2 className="text-xl font-semibold text-gray-800 text-center flex-1 -ml-10">
             Paso 3: Resultados
           </h2>

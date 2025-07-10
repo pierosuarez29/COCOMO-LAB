@@ -26,7 +26,7 @@ const PantallaSeleccionModelo = () => {
         {/* Botón volver dentro del cuadro */}
         <div className="absolute top-4 left-4">
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/nombre")}
             className="flex items-center gap-1 text-sm text-blue-600 hover:underline cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
